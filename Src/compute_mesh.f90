@@ -24,8 +24,9 @@ SUBROUTINE COMPUTE_MESH(Blk)
   Blk%dx = dx 
   Blk%dy = dy 
   !---------------------
-  
+  !$OMP PARALLEL DO
   DO j=-1,jm+2
+     !$OMP PARALLEL DO
      DO i=-1,im+2
         
         Blk%X(i,j) = (Xs-2*dx) + dx*(i+1)
@@ -33,8 +34,9 @@ SUBROUTINE COMPUTE_MESH(Blk)
         
 
      END DO
+  !$OMP END PARALLEL DO
   END DO
-  
+  !$OMP END PARALLEL DO
   
   
 END SUBROUTINE COMPUTE_MESH
