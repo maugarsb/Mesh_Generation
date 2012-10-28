@@ -20,6 +20,10 @@ SUBROUTINE COMPUTE_MESH(Blk)
   !---------------------
   dx = (Xe - Xs)/dble(im-1)
   dy = (Ye - Ys)/dble(jm-1)
+  !---------------------
+  Blk%dx = dx 
+  Blk%dy = dy 
+  !---------------------
   
   DO j=-1,jm+2
      DO i=-1,im+2

@@ -7,8 +7,8 @@ PROGRAM MAIN
   
   !*************************************************************
 
-  Blk1%im = 100
-  Blk1%jm = 100
+  Blk1%im = 1000
+  Blk1%jm = 1000
   Blk1%X_Start = -15.D0
   Blk1%Y_Start = -15.D0
   Blk1%X_End = 15.D0
@@ -22,7 +22,9 @@ PROGRAM MAIN
   CALL EXTRACT_MESH(Blk1,'n')
   CALL EXTRACT_MESH(Blk1,'center')
 
-!  CALL COMPUTE_INIT_STATE(Blk1)
+  CALL INIT_BLOCK(Blk1)
+
+  CALL EXTRACT_FIELD_CF(Blk1)
 
 
 END PROGRAM MAIN
