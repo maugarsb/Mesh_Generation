@@ -41,13 +41,14 @@ CONTAINS
   !=============================================================
   !=============================================================
 
-  SUBROUTINE EXTRACT_MESH(Blk,ExtractType)
+  SUBROUTINE EXTRACT_MESH(Blk,ExtractType,MeshFileName)
     IMPLICIT NONE
     !*************************************************************
     TYPE(BLOCK) :: Blk
     INTEGER :: im,jm
     INTEGER :: i,j
-    CHARACTER(len=*) :: ExtractType
+    CHARACTER(len=*)   :: ExtractType
+    CHARACTER(len=256) :: MeshFileName
     !*************************************************************
 
     im = Blk%im
@@ -55,8 +56,8 @@ CONTAINS
 
 
     IF(ExtractType.EQ.'n')THEN
-       write(*,'(A19,A)') "Ecriture du fichier : ", './mesh.tp'
-       open(unit=1,file='./mesh.tp',status='replace',action='write')
+       write(*,'(A19,A)') "Ecriture du fichier : ", MeshFileName
+       open(unit=1,file=MeshFileName,status='replace',action='write')
        write(1,*) 'TITLE="Maillage "'
        write(1,*) 'VARIABLES = "X" "Y"'
        write(1,*) 'ZONE T= " ", I=',im,'J=',jm,'F=BLOCK'
@@ -78,32 +79,33 @@ CONTAINS
 
   !=============================================================
 
-  SUBROUTINE EXTRACT_FIELD_CF(Blk)
+  SUBROUTINE EXTRACT_FIELD_CF(Blk,FileName)
     IMPLICIT NONE
     !*************************************************************
     TYPE(BLOCK) :: Blk
     INTEGER :: im,jm
     INTEGER :: i,j
+    CHARACTER(len=256) :: FileName
     !*************************************************************
 
     im = Blk%im
     jm = Blk%jm
 
-    write(*,'(A19,A)') "Ecriture du fichier : ", './field.tp'
-    open(unit=1,file='./field.tp',status='replace',action='write')
-    write(1,*) 'TITLE="Maillage "'
-    write(1,*) 'VARIABLES = "X" "Y" "ro" "rou" "rov" "roE"'
-    write(1,*) 'ZONE T= " ", I=',im,'J=',jm,'F=BLOCK'
-    write(1,*) ((Blk%X_Center(i,j),i=1,im),j=1,jm)
-    write(1,*) ((Blk%Y_Center(i,j),i=1,im),j=1,jm)
-    write(1,*) ((Blk%ro(i,j),i=1,im),j=1,jm)
-    write(1,*) ((Blk%rou(i,j),i=1,im),j=1,jm)
-    write(1,*) ((Blk%rov(i,j),i=1,im),j=1,jm)
-    write(1,*) ((Blk%roE(i,j),i=1,im),j=1,jm)
-    close(1)
+!!$    write(*,'(A19,A)') "Ecriture du fichier : ", FileName
+!!$    open(unit=1,file=FileName,status='replace',action='write')
+!!$    write(1,*) 'TITLE="Maillage "'
+!!$    write(1,*) 'VARIABLES = "X" "Y" "ro" "rou" "rov" "roE"'
+!!$    write(1,*) 'ZONE T= " ", I=',im,'J=',jm,'F=BLOCK'
+!!$    write(1,*) ((Blk%X_Center(i,j),i=1,im),j=1,jm)
+!!$    write(1,*) ((Blk%Y_Center(i,j),i=1,im),j=1,jm)
+!!$    write(1,*) ((Blk%ro(i,j),i=1,im),j=1,jm)
+!!$    write(1,*) ((Blk%rou(i,j),i=1,im),j=1,jm)
+!!$    write(1,*) ((Blk%rov(i,j),i=1,im),j=1,jm)
+!!$    write(1,*) ((Blk%roE(i,j),i=1,im),j=1,jm)
+!!$    close(1)
 
-    write(*,'(A19,A)') "Ecriture du fichier : ", './field_cf.tp'
-    open(unit=1,file='./field_cf.tp',status='replace',action='write')
+    write(*,'(A19,A)') "Ecriture du fichier : ", FileName
+    open(unit=1,file=FileName,status='replace',action='write')
     write(1,*) 'TITLE="Maillage "'
     write(1,*) 'VARIABLES = "X" "Y" "ro" "rou" "rov" "roE"'
     write(1,*) 'ZONE T= " ", I=',im+3,'J=',jm+3,'F=BLOCK'
@@ -116,6 +118,35 @@ CONTAINS
     close(1) 
 
   END SUBROUTINE EXTRACT_FIELD_CF
+
+  !=============================================================
+
+  SUBROUTINE EXTRACT_CELL_CENTER(Blk,FileName)
+    IMPLICIT NONE
+    !*************************************************************
+    TYPE(BLOCK) :: Blk
+    INTEGER :: im,jm
+    INTEGER :: i,j
+    CHARACTER(len=256) :: FileName
+    !*************************************************************
+
+    im = Blk%im
+    jm = Blk%jm
+
+    write(*,'(A19,A)') "Ecriture du fichier : ", './test.tp'
+    open(unit=1,file='./test.tp',status='replace',action='write')
+    write(1,*) 'TITLE="Maillage "'
+    write(1,*) 'VARIABLES = "X" "Y" "ro" "rou" "rov" "roE"'
+    write(1,*) 'ZONE T= " ", I=',im,'J=',jm,'F=BLOCK,VARLOCATION=([3,4,5,6]=CELLCENTERED)'
+    write(1,*) ((Blk%X(i,j),i=1,im),j=1,jm)
+    write(1,*) ((Blk%Y(i,j),i=1,im),j=1,jm)
+    write(1,*) ((Blk%ro(i,j),i=1,im-1),j=1,jm-1)
+    write(1,*) ((Blk%rou(i,j),i=1,im-1),j=1,jm-1)
+    write(1,*) ((Blk%rov(i,j),i=1,im-1),j=1,jm-1)
+    write(1,*) ((Blk%roE(i,j),i=1,im-1),j=1,jm-1)
+    close(1) 
+
+  END SUBROUTINE EXTRACT_CELL_CENTER
 
   !=============================================================
 
